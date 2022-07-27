@@ -51,11 +51,11 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         itemModel.normalImageInfo = normalImageInfos?[index]
         itemModel.selectedImageInfo = selectedImageInfos?[index]
         itemModel.loadImageClosure = loadImageClosure
-        itemModel.imageSize = imageSize
+        itemModel.imageSize = (normalImageInfos?[index].isEmpty ?? true) ? .zero: imageSize
         itemModel.isImageZoomEnabled = isImageZoomEnabled
         itemModel.imageNormalZoomScale = 1
         itemModel.imageSelectedZoomScale = imageSelectedZoomScale
-        itemModel.titleImageSpacing = titleImageSpacing
+        itemModel.titleImageSpacing = (normalImageInfos?[index].isEmpty ?? true) ? 0: titleImageSpacing
         if index == selectedIndex {
             itemModel.imageCurrentZoomScale = itemModel.imageSelectedZoomScale
         }else {
@@ -65,14 +65,20 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
 
     open override func preferredSegmentedView(_ segmentedView: JXSegmentedView, widthForItemAt index: Int) -> CGFloat {
         var width = super.preferredSegmentedView(segmentedView, widthForItemAt: index)
+        var tempImgWidth = imageSize.width
+        var tempSpace = titleImageSpacing
+        if let infos = normalImageInfos, infos.count > index, infos[index].isEmpty {
+            tempImgWidth = 0
+            tempSpace = 0
+        }
         if itemWidth == JXSegmentedViewAutomaticDimension {
             switch titleImageType {
             case .leftImage, .rightImage:
-                width += titleImageSpacing + imageSize.width
+                width += tempSpace + tempImgWidth
             case .topImage, .bottomImage:
-                width = max(itemWidth, imageSize.width)
+                width = max(itemWidth, tempImgWidth)
             case .onlyImage:
-                width = imageSize.width
+                width = tempImgWidth
             case .onlyTitle:
                 break
             }
@@ -82,13 +88,19 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
 
     public override func segmentedView(_ segmentedView: JXSegmentedView, widthForItemContentAt index: Int) -> CGFloat {
         var width = super.segmentedView(segmentedView, widthForItemContentAt: index)
+        var tempImgWidth = imageSize.width
+        var tempSpace = titleImageSpacing
+        if let infos = normalImageInfos, infos.count > index, infos[index].isEmpty {
+            tempImgWidth = 0
+            tempSpace = 0
+        }
         switch titleImageType {
         case .leftImage, .rightImage:
-            width += titleImageSpacing + imageSize.width
+            width += tempSpace + tempImgWidth
         case .topImage, .bottomImage:
-            width = max(itemWidth, imageSize.width)
+            width = max(itemWidth, tempImgWidth)
         case .onlyImage:
-            width = imageSize.width
+            width = tempImgWidth
         case .onlyTitle:
             break
         }
