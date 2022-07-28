@@ -51,11 +51,11 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         itemModel.normalImageInfo = normalImageInfos?[index]
         itemModel.selectedImageInfo = selectedImageInfos?[index]
         itemModel.loadImageClosure = loadImageClosure
-        itemModel.imageSize = (normalImageInfos?[index].isEmpty ?? true) ? .zero: imageSize
+        itemModel.imageSize = (selectedImageInfos?[index].isEmpty ?? true) ? .zero: imageSize
         itemModel.isImageZoomEnabled = isImageZoomEnabled
         itemModel.imageNormalZoomScale = 1
         itemModel.imageSelectedZoomScale = imageSelectedZoomScale
-        itemModel.titleImageSpacing = (normalImageInfos?[index].isEmpty ?? true) ? 0: titleImageSpacing
+        itemModel.titleImageSpacing = (selectedImageInfos?[index].isEmpty ?? true) ? 0: titleImageSpacing
         if index == selectedIndex {
             itemModel.imageCurrentZoomScale = itemModel.imageSelectedZoomScale
         }else {
@@ -67,7 +67,7 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         var width = super.preferredSegmentedView(segmentedView, widthForItemAt: index)
         var tempImgWidth = imageSize.width
         var tempSpace = titleImageSpacing
-        if let infos = normalImageInfos, infos.count > index, infos[index].isEmpty {
+        if let infos = selectedImageInfos, infos.count > index, infos[index].isEmpty {
             tempImgWidth = 0
             tempSpace = 0
         }
@@ -90,7 +90,7 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         var width = super.segmentedView(segmentedView, widthForItemContentAt: index)
         var tempImgWidth = imageSize.width
         var tempSpace = titleImageSpacing
-        if let infos = normalImageInfos, infos.count > index, infos[index].isEmpty {
+        if let infos = selectedImageInfos, infos.count > index, infos[index].isEmpty {
             tempImgWidth = 0
             tempSpace = 0
         }
