@@ -35,6 +35,8 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
     open var isImageZoomEnabled: Bool = false
     /// 图片缩放选中时的scale
     open var imageSelectedZoomScale: CGFloat = 1.2
+    /// 内容offsetY调整
+    open var offsetCenterY: CGFloat = 0
 
     open override func preferredItemModelInstance() -> JXSegmentedBaseItemModel {
         return JXSegmentedTitleImageItemModel()
@@ -46,7 +48,7 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         guard let itemModel = itemModel as? JXSegmentedTitleImageItemModel else {
             return
         }
-
+        itemModel.offsetCenterY = offsetCenterY
         itemModel.titleImageType = titleImageType
         itemModel.normalImageInfo = normalImageInfos?[index]
         itemModel.selectedImageInfo = selectedImageInfos?[index]
